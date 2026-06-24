@@ -1,0 +1,6 @@
+date,home_team,away_team,predicted,p_home_win,p_draw,p_away_win
+2026-06-17,Portugal,DR Congo,home_win,0.71,0.20,0.09
+2026-06-17,Uzbekistan,Colombia,away_win,0.14,0.24,0.62
+2026-06-17,England,Croatia,home_win,0.62,0.24,0.14
+2026-06-17,Ghana,Panama,away_win,0.17,0.25,0.59
+2026-06-18,Czech Republic,South Africa,home_win,0.49,0.28,0.22
