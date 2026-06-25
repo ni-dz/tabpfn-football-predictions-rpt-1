@@ -195,6 +195,7 @@ def h2h_summary(df, home, away, before_date, n=5):
 
 def write_predictions(future, proba_array, classes, suffix, reasoning=None):
     """Write a predictions CSV in the competition's standard schema."""
+    import os
     cols = {c: proba_array[:, i] for i, c in enumerate(classes)}
     out = future[["date", "home_team", "away_team"]].copy()
     predicted_idx = proba_array.argmax(1)
@@ -204,8 +205,9 @@ def write_predictions(future, proba_array, classes, suffix, reasoning=None):
     if reasoning is not None:
         out["reasoning"] = list(reasoning)
 
+    os.makedirs("results", exist_ok=True)
     today_str = pd.Timestamp.now().strftime("%Y%m%d")
-    filename = f"predictions_{suffix}_{today_str}.csv"
+    filename = f"results/predictions_{suffix}_{today_str}.csv"
     out.to_csv(filename, index=False)
     return filename, out
 
