@@ -2,3 +2,5 @@ tabpfn-client
 pandas
 numpy
 scikit-learn
+generative-ai-hub-sdk
+python-dotenv

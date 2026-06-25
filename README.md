@@ -1,62 +1,87 @@
-# TabPFN Football Predictions
+# TabPFN / RPT-1 / LLM Football Predictions
 
-This repository is a template to participate in Prior Labs' [World Cup Game Outcome Prediction competition](https://ux.priorlabs.ai/worldcup). It has a basic script that outputs predictions with a standard prediction template. Use this template to generate predictions. The `predict.py` script should only be a source of inspiration, feel free to fork the repo and add your own ideas.
+Three competition entries for Prior Labs' [World Cup Game Outcome Prediction competition](https://ux.priorlabs.ai/football#competition) sharing the same engineered-feature pipeline so their outputs are directly comparable.
 
-The script predicts international football match outcomes using [TabPFN](https://github.com/PriorLabs/TabPFN) using the [client repository](https://github.com/PriorLabs/tabpfn-client). It achieves ~59% accuracy and ~0.86 log-loss on held-out data. There is a good margin of progression. We look forward to your submission!
-
-The model is trained on engineered features: ELO ratings, recent form, head-to-head record, rest days, and tournament importance. Data comes from [martj42/international_results](https://github.com/martj42/international_results).
+| Script | Approach | Model |
+|---|---|---|
+| `predict.py` | Baseline — TabPFN on engineered features | TabPFN (Prior Labs) |
+| `predict_rpt1.py` | **Approach 1** — SAP RPT-1 in-context learning | `sap-rpt-1-small` |
+| `predict_llm.py` | **Approach 2** — LLM only, given a structured match briefing | `gpt-5` via Orchestration V2 |
+| `predict_hybrid.py` | **Approach 3** — RPT-1 base probabilities refined by the LLM | `sap-rpt-1-small` + `gpt-5` |
 
 ## Setup
 
 ```bash
-git clone https://github.com/eliott-kalfon/tabpfn-football-predictions.git
-cd tabpfn-football-predictions
 pip install -r requirements.txt
+```
+
+`.env` (gitignored) needs your SAP AI Core credentials for Approaches 1–3:
+
+```
+AICORE_AUTH_URL=...
+AICORE_CLIENT_ID=...
+AICORE_CLIENT_SECRET=...
+AICORE_BASE_URL=...
+AICORE_RESOURCE_GROUP=...
 ```
 
 ## Run
 
 ```bash
-python predict.py
+python predict.py            # Baseline (TabPFN)
+python predict_rpt1.py       # Approach 1 (RPT-1)
+python predict_llm.py        # Approach 2 (LLM only)
+python predict_hybrid.py     # Approach 3 (Hybrid)
 ```
 
-This will:
+Every run:
 
-1. Download the full international results dataset (~47 000 matches) on first run
-2. Build features with a single chronological pass (no leakage)
-3. Run a quick backtest on the previous calendar month and print accuracy + log-loss
-4. Train on up to 10 000 recent matches and predict all upcoming fixtures
-5. Save predictions to `predictions_YYYYMMDD.csv` and print them to the console
+1. Downloads the latest international results dataset from [martj42/international_results](https://github.com/martj42/international_results) (new matches land daily — always fresh).
+2. Builds features with a single chronological pass (no leakage).
+3. Runs a backtest on the previous calendar month — prints accuracy + log-loss.
+4. Predicts every upcoming fixture.
+5. Saves `predictions_<approach>_YYYYMMDD.csv` and prints the table.
 
-To refresh the dataset from source before predicting:
-
-```bash
-python predict.py --refresh
-```
+Output schema is the competition standard: `date, home_team, away_team, predicted, p_home_win, p_draw, p_away_win` (plus `reasoning` for LLM-based approaches).
 
 ## Output
 
 ```
-Latest game in dataset: 2026-06-14
-Data freshness: 0 days 18:32:11
+Latest game in dataset: 2026-06-27
+Data freshness: 0 days 09:44:16
 
-Backtest 2026-05 (87 matches): accuracy 59%, log-loss 0.861
+Backtest 2026-05 (26 matches):
+  accuracy 85%, log-loss 0.531
 
-142 fixture predictions -> predictions_20260616.csv
+Predicting 18 upcoming fixtures with RPT-1...
+  context=2000 rows, queries=18 (1 chunk(s))
+  chunk 1/1 ok
 
-  2026-06-18           Argentina vs Australia             -> home_win   H  72% | D  17% | A  11%
-  2026-06-18              France vs Morocco              -> home_win   H  61% | D  23% | A  16%
+Saved -> predictions_rpt1_20260624.csv
+
+18 fixture predictions
+
+  2026-06-25            Tunisia vs Netherlands       -> away_win   H 15% | D 15% | A 70%
+  2026-06-25              Japan vs Sweden            -> home_win   H 68% | D 16% | A 16%
   ...
 ```
+
+## Approach details
+
+**Approach 1 (RPT-1)** — RPT-1 is a relational pretrained transformer; no separate training pass. We hand it 2000 recent played matches as context plus the upcoming fixtures with `OUTCOME='[PREDICT]'`. RPT-1 learns the relationship between engineered features and match outcomes in-context. Settings: `sap-rpt-1-small`, 2000-row context (model hard-cap is 2048), automatic chunking by the 128-query-row API limit.
+
+**Approach 2 (LLM only)** — One LLM call per fixture (parallelized). The prompt is a JSON briefing with ELO, recent form, head-to-head record, prose summaries of recent matches, venue, and tournament importance. Strict JSON schema response format guarantees parseable output. Settings: `gpt-5` via Orchestration V2, 4096 max-completion-tokens (gpt-5 burns reasoning tokens before output).
+
+**Approach 3 (hybrid)** — RPT-1 runs first to produce base probabilities for every upcoming fixture. The LLM then receives the RPT-1 distribution **together** with the same prose context Approach 2 uses, and is instructed to default to trusting RPT-1 unless qualitative context materially contradicts it. The `reasoning` column makes every adjustment auditable.
 
 ## Features
 
 | Feature | Description |
 |---|---|
-| `elo_diff` | ELO gap (home + home advantage - away) |
+| `elo_diff` | ELO gap (home + home advantage − away) |
 | `home_elo`, `away_elo` | Current ELO ratings |
-| `form5_diff` | Difference in average points per game over last 5 matches |
-| `form10_diff` | Same over last 10 matches |
+| `form5_diff`, `form10_diff` | Difference in average points per game over last 5 / 10 matches |
+| `home_form5`, `away_form5` | Points per game over last 5 matches |
 | `home_winrate`, `away_winrate` | Win rate over last 10 matches |
 | `home_gf5`, `away_gf5` | Goals scored per game over last 5 matches |
 | `home_ga5`, `away_ga5` | Goals conceded per game over last 5 matches |
