@@ -1,0 +1,11 @@
+date,home_team,away_team,predicted,p_home_win,p_draw,p_away_win
+2026-07-01,Belgium,Senegal,home_win,0.52,0.24,0.24
+2026-07-01,United States,Bosnia and Herzegovina,home_win,0.7,0.15000000000000002,0.15000000000000002
+2026-07-01,England,DR Congo,home_win,0.65,0.175,0.175
+2026-07-02,Portugal,Croatia,home_win,0.67,0.16499999999999998,0.16499999999999998
+2026-07-02,Switzerland,Algeria,home_win,0.5,0.25,0.25
+2026-07-02,Spain,Austria,home_win,0.79,0.10499999999999998,0.10499999999999998
+2026-07-03,Argentina,Cape Verde,home_win,0.82,0.09000000000000002,0.09000000000000002
+2026-07-03,Colombia,Ghana,home_win,0.79,0.10499999999999998,0.10499999999999998
+2026-07-03,Australia,Egypt,home_win,0.44,0.28,0.28
+2026-07-04,Canada,Morocco,away_win,0.26,0.26,0.48

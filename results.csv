@@ -49477,9 +49477,9 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral
 2026-06-27,Panama,England,0.0,2.0,FIFA World Cup,East Rutherford,United States,True
 2026-06-27,Croatia,Ghana,2.0,1.0,FIFA World Cup,Philadelphia,United States,True
 2026-06-28,South Africa,Canada,0.0,1.0,FIFA World Cup,Inglewood,United States,True
-2026-06-29,Brazil,Japan,,,FIFA World Cup,Houston,United States,True
-2026-06-29,Germany,Paraguay,,,FIFA World Cup,Foxborough,United States,True
-2026-06-29,Netherlands,Morocco,,,FIFA World Cup,Guadalupe,Mexico,True
+2026-06-29,Brazil,Japan,2.0,1.0,FIFA World Cup,Houston,United States,True
+2026-06-29,Germany,Paraguay,1.0,1.0,FIFA World Cup,Foxborough,United States,True
+2026-06-29,Netherlands,Morocco,1.0,1.0,FIFA World Cup,Guadalupe,Mexico,True
 2026-06-30,Ivory Coast,Norway,,,FIFA World Cup,Arlington,United States,True
 2026-06-30,France,Sweden,,,FIFA World Cup,East Rutherford,United States,True
 2026-06-30,Mexico,Ecuador,,,FIFA World Cup,Mexico City,Mexico,False
@@ -49492,3 +49492,4 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral
 2026-07-03,Australia,Egypt,,,FIFA World Cup,Arlington,United States,True
 2026-07-03,Argentina,Cape Verde,,,FIFA World Cup,Miami Gardens,United States,True
 2026-07-03,Colombia,Ghana,,,FIFA World Cup,Kansas City,United States,True
+2026-07-04,Canada,Morocco,,,FIFA World Cup,Houston,United States,True
