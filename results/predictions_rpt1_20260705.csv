@@ -1,0 +1,6 @@
+date,home_team,away_team,predicted,p_home_win,p_draw,p_away_win
+2026-07-06,Argentina,Egypt,home_win,0.67,0.16499999999999998,0.16499999999999998
+2026-07-06,Switzerland,Colombia,away_win,0.305,0.305,0.39
+2026-07-06,Portugal,Spain,away_win,0.22999999999999998,0.22999999999999998,0.54
+2026-07-06,United States,Belgium,away_win,0.32,0.32,0.36
+2026-07-09,France,Morocco,draw,0.21000000000000002,0.58,0.21000000000000002
