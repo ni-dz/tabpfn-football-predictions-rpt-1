@@ -144,10 +144,18 @@ def build_features(df):
 
 
 def split_played_future(feats):
-    """Return (played-with-outcome since TRAIN_START, upcoming fixtures sorted by date)."""
+    """Return (played-with-outcome since TRAIN_START, upcoming fixtures sorted by date).
+
+    Upstream includes future tournament slots whose teams aren't decided yet
+    (e.g. World Cup semi/final placeholders) as rows with blank home/away team.
+    Drop those — they carry no features and downstream validators reject them.
+    """
     played = feats[feats["outcome"].notna() & (feats["date"] >= TRAIN_START)]
-    future = feats[feats["home_score"].isna() & (feats["date"] > TODAY)].sort_values("date")
-    return played, future
+    future = feats[feats["home_score"].isna() & (feats["date"] > TODAY)
+                   & feats["home_team"].notna() & feats["away_team"].notna()]
+    future = future[(future["home_team"].astype(str).str.strip() != "")
+                    & (future["away_team"].astype(str).str.strip() != "")]
+    return played, future.sort_values("date")
 
 
 def backtest_window(played):
