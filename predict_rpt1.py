@@ -107,6 +107,10 @@ def main():
         print(f"  accuracy {accuracy_score(test['outcome'], pred):.0%}, "
               f"log-loss {log_loss(test['outcome'], proba, labels=OUTCOMES):.3f}")
 
+    if not len(future):
+        print("\nNo upcoming fixtures to predict — nothing to do.")
+        return
+
     print(f"\nPredicting {len(future)} upcoming fixtures with RPT-1...")
     proba = rpt1_predict(played.tail(RPT1_CONTEXT), future)
     filename, out = write_predictions(future, proba, OUTCOMES, suffix="rpt1")

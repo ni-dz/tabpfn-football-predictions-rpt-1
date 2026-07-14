@@ -32,6 +32,10 @@ def main():
               f"accuracy {accuracy_score(test['outcome'], pred):.0%}, "
               f"log-loss {log_loss(test['outcome'], proba, labels=clf.classes_):.3f}")
 
+    if not len(future):
+        print("\nNo upcoming fixtures to predict — nothing to do.")
+        return
+
     clf = train(played.tail(MAX_TRAIN))
     proba = clf.predict_proba(future[FEATURES].values)
     filename, out = write_predictions(future, proba, list(clf.classes_), suffix="tabpfn")

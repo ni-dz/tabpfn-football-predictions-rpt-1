@@ -49501,6 +49501,10 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral
 2026-07-07,Argentina,Egypt,3.0,2.0,FIFA World Cup,Atlanta,United States,True
 2026-07-07,Switzerland,Colombia,0.0,0.0,FIFA World Cup,Vancouver,Canada,True
 2026-07-09,France,Morocco,2.0,0.0,FIFA World Cup,Foxborough,United States,True
-2026-07-10,Spain,Belgium,,,FIFA World Cup,Inglewood,United States,True
-2026-07-11,Norway,England,,,FIFA World Cup,Miami Gardens,United States,True
-2026-07-11,Argentina,Switzerland,,,FIFA World Cup,Kansas City,United States,True
+2026-07-10,Spain,Belgium,2.0,1.0,FIFA World Cup,Inglewood,United States,True
+2026-07-11,Norway,England,1.0,2.0,FIFA World Cup,Miami Gardens,United States,True
+2026-07-11,Argentina,Switzerland,3.0,1.0,FIFA World Cup,Kansas City,United States,True
+2026-07-14,France,Spain,,,FIFA World Cup,Arlington,United States,True
+2026-07-15,England,Argentina,,,FIFA World Cup,Atlanta,United States,True
+2026-07-18,,,,,FIFA World Cup,Miami Gardens,United States,True
+2026-07-19,,,,,FIFA World Cup,East Rutherford,United States,True
